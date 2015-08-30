@@ -6,7 +6,7 @@
   "keywords": [
   ],
   "activationCommands": {},
-  "repository": "https://github.com/atom/connect-kdb-q",
+  "repository": "https://github.com/quintanar401/connect-kdb-q",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

@@ -13,7 +13,7 @@
     'label': 'KDB-Q'
     'submenu': [
         {label: 'Connect to a server', command: 'connect-kdb-q:servers'},
-        {label: 'Exec selection', command: 'connect-kdb-q:exec-line'},
+        {label: 'Exec line', command: 'connect-kdb-q:exec-line'},
         {label: 'Exec selection', command: 'connect-kdb-q:exec-selection'}
     ]
   }

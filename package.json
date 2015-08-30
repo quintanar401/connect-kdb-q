@@ -1,10 +1,9 @@
 {
   "name": "connect-kdb-q",
   "main": "./lib/connect-kdb-q",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A short description of your package",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {},
   "repository": "https://github.com/quintanar401/connect-kdb-q",
   "license": "MIT",
@@ -27,5 +26,5 @@
       }
     }
   },
-  "__vue" : "0.12.x"
+  "__vue": "0.12.x"
 }

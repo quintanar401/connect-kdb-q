@@ -1,0 +1,41 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.connect-kdb-q {
+}
+
+.q-select {
+  background-color: @background-color-highlight;
+  color: @text-color;
+  border-color: @base-border-color;
+  border-width: 1px;
+  border-radius: 4px;
+  width: 100%
+}
+
+.status-bar .inline-block .q-progress {
+  vertical-align: middle;
+  width: 40px;
+  background-size: 10px;
+}
+
+atom-text-editor::shadow {
+  .kdb-exception .region {
+      background-color: @background-color-error;
+      border-width: 1px;
+      border-radius: 4px;
+  }
+  .kdb-success .region {
+      background-color: @background-color-success;
+      border-width: 1px;
+      border-radius: 4px;
+  }
+  .kdb-show .region {
+      background-color: @background-color-info;
+      border-width: 1px;
+      border-radius: 4px;
+  }
+}

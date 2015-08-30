@@ -1,0 +1,31 @@
+{
+  "name": "connect-kdb-q",
+  "main": "./lib/connect-kdb-q",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {},
+  "repository": "https://github.com/atom/connect-kdb-q",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "long": "2.x",
+    "loophole": "^1.0.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    },
+    "minimap": {
+      "versions": {
+        "1.0.0": "consumeMinimapServiceV1"
+      }
+    }
+  },
+  "__vue" : "0.12.x"
+}

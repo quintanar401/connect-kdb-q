@@ -1,0 +1,20 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor[data-grammar="source q"]': [
+    {
+      label: 'KDB-Q'
+      submenu: [
+        {label: 'Exec selection', command: 'connect-kdb-q:exec-selection'}
+      ]
+    }
+  ]
+'menu': [
+  {
+    'label': 'KDB-Q'
+    'submenu': [
+        {label: 'Connect to a server', command: 'connect-kdb-q:servers'},
+        {label: 'Exec selection', command: 'connect-kdb-q:exec-line'},
+        {label: 'Exec selection', command: 'connect-kdb-q:exec-selection'}
+    ]
+  }
+]

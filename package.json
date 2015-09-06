@@ -2,7 +2,7 @@
   "name": "connect-kdb-q",
   "main": "./lib/connect-kdb-q",
   "version": "0.1.0",
-  "description": "A short description of your package",
+  "description": "Provides ability to execute arbitrary queries on Q servers and see their results.",
   "keywords": [],
   "activationCommands": {},
   "repository": "https://github.com/quintanar401/connect-kdb-q",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "long": "2.x",
-    "loophole": "^1.0.0"
+    "vue": "csp"
   },
   "consumedServices": {
     "status-bar": {
@@ -25,6 +25,5 @@
         "1.0.0": "consumeMinimapServiceV1"
       }
     }
-  },
-  "__vue": "0.12.x"
+  }
 }

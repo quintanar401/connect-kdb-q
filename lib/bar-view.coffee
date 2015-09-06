@@ -1,5 +1,4 @@
 {CompositeDisposable} = require 'atom'
-{allowUnsafeNewFunction} = require 'loophole'
 Vue = require 'vue'
 
 barView = '''
@@ -32,8 +31,7 @@ class srvBarView
     @data = isQEditor: false, inProgress: false, name:"", status: ""
     @update()
     container = document.createElement 'div'
-    @vm = allowUnsafeNewFunction =>
-      new Vue data: @data, template: barView, el: container, methods:
+    @vm = new Vue data: @data, template: barView, el: container, methods:
         onClick: => @model.setConnection()
     @subscriptions.add atom.tooltips.add @vm.$$.tool, title: => @tool
 

@@ -3,7 +3,7 @@ C = require './c'
 class Servers
   constructor: ->
     @srvView = null; @barView = @pendingQuery = null
-    @srvs = []; @tags = {}; @srvMap = {}
+    @srvs = []; @tagLists = []; @tags = {}; @srvMap = {}; @defUname = null; @defPass = null
     @init(); @currSrv = -1
 
   setConnection: () ->
@@ -35,13 +35,21 @@ class Servers
     try
       ctx = JSON.parse file
       for n,v of ctx
-        v = v.split ' ' if typeof v is 'string'
         if n is "servers"
           @updSrv i for i in v
-        else if v instanceof Array
-          @tags[n] = v
+        else if n is 'uname'
+          @defUname ?= v
+        else if n is 'pass'
+          @defPass ?= v
         else
-          console.error "JSON config file has an incorrect entry " + n
+          v = v.split ' ' if typeof v is 'string'
+          if v instanceof Array
+            if /:list$/.test n
+              n = n.slice 0, -5
+              @tagLists.push n
+            @tags[n] = v
+          else
+            console.error "JSON config file has an incorrect entry " + n
     catch error
       console.error "Couldn't load the config file: " + error
 
@@ -90,7 +98,11 @@ class Servers
     @barView.update()
     srv.handle?.clearEvents()
     srv.handle = null
-    C.C.connect srv, (err,res) => @onConnect(srvId,err,res)
+    s = host: srv.host, port: srv.port, uname: srv.uname, pass: srv.pass, exclusive: false
+    if !srv.uname
+      s.uname = @defUname
+      s.pass = @defPass
+    C.C.connect s, (err,res) => @onConnect(srvId,err,res)
 
   onConnect: (srvId, err, res) ->
     srv = @srvs[srvId]
@@ -166,8 +178,8 @@ class Servers
   destroy: ->
     @srvView?.destroy()
     @statusBarTile?.destroy()
-    @srvs = []; @tags = {}; @srvView = null; @srvMap = {}
-    @statusBarTile = @pendingQuery = null
+    @srvs = []; @tagLists = []; @tags = {}; @srvView = null; @srvMap = {}
+    @statusBarTile = @pendingQuery = @defUname = @defPass = @tagLists = null
 
 module.exports =
   servers: new Servers()

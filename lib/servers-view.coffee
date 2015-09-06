@@ -1,4 +1,3 @@
-{allowUnsafeNewFunction} = require 'loophole'
 Vue = require 'vue'
 
 selectSrvView = '''
@@ -87,8 +86,7 @@ class SrvView
         tag.select = el.srcElement.value
         @filterSrvs()
         @focus()
-    @vm = allowUnsafeNewFunction =>
-      new Vue data: @data, template: selectSrvView, el: container, methods: meths
+    @vm = new Vue data: @data, template: selectSrvView, el: container, methods: meths
     @panel = atom.workspace.addModalPanel(item: @getElement(), visible: false)
     @editor = @vm.$$.editor.getModel()
     @editor.getBuffer().onDidStopChanging =>
@@ -110,15 +108,23 @@ class SrvView
   generateTags: ->
     tags = []
     for t,v of @model.tags
-      tag = name: t, ty: 'btn'
-      tag.tags = v.map (i) ->
-        isSelected: false, val: i
+      isLst = t in @model.tagLists
+      tag = name: t, ty: (if isLst then 'lst' else 'btn')
+      if isLst
+        tag.tags = v
+        tag.tags.unshift 'All'
+      else
+        tag.tags = v.map (i) ->
+          isSelected: false, val: i
       tags.push tag
-    hosts = ['All']; ports = ['All']
+    hosts = []; ports = []
     for s in @model.srvs
       hosts.push s.host unless s.host in hosts
       ports.push s.port unless s.port in ports
-    ports = ports.map (e) -> e.toString()
+    ports = (ports.sort((a,b)->a>b)).map (e) -> e.toString()
+    hosts = hosts.sort()
+    ports.unshift 'All'
+    hosts.unshift 'All'
     tags.push name: "host", tags: hosts, ty: 'lst', select: 'All'
     tags.push name: "port", tags: ports, ty: 'lst', select: 'All'
     tags

@@ -12,10 +12,10 @@ connect-kdb-q requires:
 This package provides the following services:
 * It fully supports Q protocol and is able to connect to 3.x servers (2.x is accounted for but not tested).
 * All Q objects are exactly represented by JS objects including long type which is not supported natively in JS. Uncompression is supported. Visual representation of Q types is identical to Q console.
-* You can fast select servers and connect to them in Select Service view using tags and filters. Two configuration files are supported for project wide servers and user servers. It is also possible to enter them manually. It is possible to connect to different servers in different panels.
+* You can fast select servers and connect to them in Select Server view using tags and filters. Two configuration files are supported for project wide servers and user servers. It is also possible to enter servers manually. It is possible to connect to different servers in different panels.
 * Server connection status is displayed in the status bar and in Select Server view.
-* You can execute selected text or the current line. Results are shown in a separate Query Results view which is the ordinary editor with some additional features, thus you can use it as a Q Console to execute ad-hoc queries, copy data, use autocomplete to navigate code and etc.
-* Query Results view provides information about the query, its result type and size. If the result is too big to fit it is possible to print additional data.
+* You can execute selected text or the current line. Results are shown in a separate Query Results view which is an ordinary editor with some additional features, thus you can use it as Q Console to execute ad-hoc queries, copy data, use autocomplete to navigate code and etc.
+* Query Results view provides information about the query, its result type and size. If the result is too big to fit it is possible to request to print additional data.
 
 ## Servers
 
@@ -30,6 +30,9 @@ Config file format is:
 {
   "region" : "EMEA US ASIA JPN",
   "tagname" : ["v1","v2","v3"],
+  "tagname:list": ["l1","l2","l3"],
+  "uname": "defaultUname",
+  "pass": "defaultPass",
   "servers" : [
     {
       "host" : "myserver.com",
@@ -57,7 +60,9 @@ The first server entry has all available settings:
 * name - optional pretty name for the server. If it is not provided it gets constructed from other fields.
 * tags - optional tags to speed up search for this server, should be a string or array of strings. EMEA, stock, mysrv and etc.
 
-You can also provide optional tags in the top level object that will be shown as filters in the server view. Tags are displayed as buttons thus keep the number of items for one tag small.
+You can provide the default username and password. They will be used for all connections that do not a username set.
+
+You can also provide optional tags in the top level object that will be shown as filters in the server view. Tags are displayed as buttons or lists, lists should be marked with ':list'.
 
 Hosts and ports are automatically converted to tags.
 

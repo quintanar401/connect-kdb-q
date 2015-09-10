@@ -637,7 +637,6 @@ class QProxy
   close: -> @conn.close(this); @conn = null
   deserialize: (b, ty = 2) ->
     msg = new QMessage b;
-    atom.msg = msg
     res = msg.r()
     console.error "unexpected request return type "+msg.s if msg.s isnt ty
     res

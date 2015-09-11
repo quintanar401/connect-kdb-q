@@ -6,7 +6,7 @@ class Servers
     @srvs = []; @tagLists = []; @tags = {}; @srvMap = {}; @defUname = null; @defPass = null
     @init(); @currSrv = -1
 
-  setConnection: () ->
+  setConnection: ->
     try
       if !@srvView
         view = require './servers-view'
@@ -15,6 +15,10 @@ class Servers
       @srvView.show()
     catch err
       console.error err
+
+  disconnect: ->
+    return unless @isConnected()
+    @srvs[@currSrv].handle.close()
 
   init: ->
     path = require 'path'
@@ -132,12 +136,14 @@ class Servers
     srv = @srvs[srvId]
     srv.lastErr = err
     srv.inProgress = false
-    @pendingQuery = null if @pendingQuery?.srvId is srvId
+    query = @pendingQuery
+    @pendingQuery = null if query?.currSrv is srvId
     srv.handle?.clearEvents()
     srv.handle = null
     @barView.update()
     @srvView.updateOnline srvId, false
     atom.notifications.addError "Server #{srv.name} has disconnected"
+    @send query.msg, query.cb if query?.retry and query?.currSrv is srvId
 
   setStatusBar: (statusBar) ->
     if !@statusBarTile
@@ -155,10 +161,19 @@ class Servers
     try
       if @isConnected()
         srv = @srvs[@currSrv]
+        if srv.inProgress
+          b = atom.confirm
+            message: 'Abort the running query?'
+            detailedMessage: 'Do you really want to disconnect from the current server and try to run the new query?'
+            buttons: ['No','Yes']
+          if srv.inProgress and b is 1
+            @pendingQuery = {@currSrv, msg, cb, cnt: 0, retry: true}
+            @disconnect()
+            return
         srv.inProgress = true
         @barView.update()
         srv.handle.sendSync msg, (err, res) =>
-          @pendingQuery = null if @pendingQuery?.srvId is srv.srvId
+          @pendingQuery = null if @pendingQuery?.currSrv is srv.srvId
           srv.inProgress = false
           @barView.update()
           res.srv = srv.name if res
@@ -179,7 +194,7 @@ class Servers
     @srvView?.destroy()
     @statusBarTile?.destroy()
     @srvs = []; @tagLists = []; @tags = {}; @srvView = null; @srvMap = {}
-    @statusBarTile = @pendingQuery = @defUname = @defPass = @tagLists = null
+    @statusBarTile = @pendingQuery = @defUname = @defPass = null
 
 module.exports =
   servers: new Servers()

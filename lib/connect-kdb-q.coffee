@@ -43,6 +43,8 @@ module.exports = ConnectKdbQ =
     @subscriptions = new CompositeDisposable
     @servers = null
     @registerEvents()
+    # TODO: change this if ever it becomes possible to publish branch deps
+    atom.vue = require '../resources/vue.min' unless atom.vue
 
   deactivate: ->
     @subscriptions.dispose()

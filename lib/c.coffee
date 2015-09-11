@@ -560,8 +560,8 @@ class QConn
     @proxies.push p = new QProxy this, @proxies.length
     p
   close: (p) ->
-    @proxies[p.id] = null
-    return if 0 < @proxies.reduce ((x,y)->x+(y is null)), 0
+    # @proxies[p.id] = null
+    # return if 0 < @proxies.reduce ((x,y)->x+(y is null)), 0
     @client.destroy()
   match: (conn) ->
     return false if @exclusive or conn.exclusive

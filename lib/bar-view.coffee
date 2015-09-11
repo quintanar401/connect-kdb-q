@@ -1,5 +1,5 @@
 {CompositeDisposable} = require 'atom'
-Vue = require 'vue'
+# Vue = require 'vue'
 
 barView = '''
   <div class='inline-block' v-show='isQEditor'>
@@ -7,7 +7,7 @@ barView = '''
          style='margin-right: 4px'
          v-el='tool'
          v-on='click: onClick()'>
-         {{name}}
+         {{name}} <span v-on='click: onCloseClick($event)' v-show="status === 'ok'" title="Disconnect" class="icon icon-x"></span>
     </div>
     <div class='inline-block' v-show='inProgress'>
       <progress class='inline-block q-progress'/>
@@ -31,8 +31,9 @@ class srvBarView
     @data = isQEditor: false, inProgress: false, name:"", status: ""
     @update()
     container = document.createElement 'div'
-    @vm = new Vue data: @data, template: barView, el: container, methods:
+    @vm = new atom.vue data: @data, template: barView, el: container, methods:
         onClick: => @model.setConnection()
+        onCloseClick: (e) => @model.disconnect(); e.stopPropagation()
     @subscriptions.add atom.tooltips.add @vm.$$.tool, title: => @tool
 
   update: ->

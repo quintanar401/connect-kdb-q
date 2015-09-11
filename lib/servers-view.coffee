@@ -1,4 +1,4 @@
-Vue = require 'vue'
+# Vue = require 'vue'
 
 selectSrvView = '''
   <atom-panel class='modal' v-on='keydown: onKey($event), mousedown: onMouseDown($event)'>
@@ -86,7 +86,7 @@ class SrvView
         tag.select = el.srcElement.value
         @filterSrvs()
         @focus()
-    @vm = new Vue data: @data, template: selectSrvView, el: container, methods: meths
+    @vm = new atom.vue data: @data, template: selectSrvView, el: container, methods: meths
     @panel = atom.workspace.addModalPanel(item: @getElement(), visible: false)
     @editor = @vm.$$.editor.getModel()
     @editor.getBuffer().onDidStopChanging =>

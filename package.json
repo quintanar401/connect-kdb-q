@@ -11,8 +11,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "long": "2.x",
-    "vue": "csp"
+    "long": "2.x"
   },
   "consumedServices": {
     "status-bar": {

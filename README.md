@@ -74,7 +74,7 @@ To open the server view:
 * Try to execute any query in a Q file. Server view will be shown if there is no current server or it is not possible to connect to it.
 
 You'll see something like this:
-![Servers](./resources/servers.png)
+![Servers](https://raw.githubusercontent.com/quintanar401/connect-kdb-q/master/resources/servers.png)
 
 You can click on tag's buttons to filter the server's list. You can also select a specific port or host. Or you can enter any tags separated by spaces in the text input field. Anyway the server list will be filtered to include only tagged servers. You can select a server by pressing <kbd>Enter</kbd> or double click. You can click on the list or use <kbd>Up</kbd> or <kbd>Down</kbd> buttons to navigate it.
 
@@ -106,7 +106,7 @@ There some settings associated with this view:
 Text in the query view is divided into two parts by '=== cut line ===' line. New query results get printed after this line. The space above can be used for ad-hoc queries. Thus the query view can be used as a Q console inside the editor.
 
 If you execute some query you'll see something like this:
-![Result](./resources/result1.png)
+![Result](https://raw.githubusercontent.com/quintanar401/connect-kdb-q/master/resources/result1.png)
 
 Notice that the query was executed from within the view.
 
@@ -119,7 +119,7 @@ Finally the query itself is printed. If it takes more than one row it is automat
 Below you can see the previous query.
 
 Notice the blue markers on the image. They indicate that there is more data to be printed. You can put cursor into one of these markers and data will be added. Lets click on the first marker:
-![Result](./resources/result2.png)
+![Result](https://raw.githubusercontent.com/quintanar401/connect-kdb-q/master/resources/result2.png)
 
 You see that some data was added on the right. Notice also that GUID is now recognized by Q grammar.
 

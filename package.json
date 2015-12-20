@@ -1,7 +1,7 @@
 {
   "name": "connect-kdb-q",
   "main": "./lib/connect-kdb-q",
-  "version": "0.3.0",
+  "version": "0.2.0",
   "description": "Provides ability to execute arbitrary queries on Q servers and see their results.",
   "keywords": [],
   "activationCommands": {},

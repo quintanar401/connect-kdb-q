@@ -1,20 +1,5 @@
 {TextEditor,CompositeDisposable} = require 'atom'
 
-class ResultEditor extends TextEditor
-  constructor: -> super
-
-  serialize: -> null
-
-  getTitle: -> 'Query Results'
-
-  save: ->
-    return unless pane = atom.workspace.paneForItem this
-    if @getPath() then super() else pane.saveItemAs this
-
-  getURI: -> 'kdb://query.results'
-
-  destroy: -> super()
-
 module.exports =
 class ResultView
   constructor: ->
@@ -22,7 +7,13 @@ class ResultView
     @model = null
 
   init: (@model) ->
-    @editor = new ResultEditor()
+    @editor = atom.workspace.buildTextEditor()
+    @editor.getTitle = -> 'Query Results'
+    @editor.save = (->
+      return unless pane = atom.workspace.paneForItem this
+      if @getPath() then super() else pane.saveItemAs this).bind @editor
+    @editor.getURI = -> 'kdb://query.results'
+    @editor.serialize = -> null
     grammar = atom.grammars.grammarForScopeName 'source.q'
     grammar.maxTokensPerLine = 1000
     @editor.setGrammar grammar if grammar

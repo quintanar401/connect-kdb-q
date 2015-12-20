@@ -79,6 +79,8 @@ module.exports = ConnectKdbQ =
   consumeMinimapServiceV1: (@minimap) ->
     @minimap.registerPlugin 'hide-query-view', this
 
+  consumeCharts: (@charts) ->
+
   activatePlugin: ->
     return if @minimapActive
     @minimapActive = true

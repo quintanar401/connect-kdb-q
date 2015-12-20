@@ -63,6 +63,7 @@ class QBase
   toString: (full = true) ->
     res = @toStr()
     if full then QConsts.listPref[-@tyId]+res+QConsts.listPost[-@tyId] else res
+  value: -> @i
   equals: (o) ->
     return false unless o?.tyId is @tyId
     @i is o.i
@@ -125,6 +126,7 @@ class QLong extends QBase
         '-0W'+QConsts.types[-@tyId]
       else
         @toStr()
+  value: -> @i.toNumber()
   equals: (o) ->
     return false unless o instanceof QLong
     @i.equals o.i
@@ -171,22 +173,29 @@ class QTimestamp extends QLong
     ms = i9 (@i.modulo 1000000000).getLowBitsUnsigned()
     d = (@i.div 1000000000).getLowBitsUnsigned()
     (getJSDate d).toISOString().replace(/...Z/,ms).replace(/-/g,'.')
+  value: -> getJSDate @i.toNumber()/1000000
 
 class QMonth extends QInt
   tyId: -13
   toStr: ->
     m=@i+24000
-    y=Math.floor m/12;
+    y=Math.floor m/12
     return "" if @i is ni
     i2(Math.floor y/100)+i2(y%100)+"."+i2(1+m%12)
+  value: ->
+    m=@i+24000
+    y=Math.floor m/12
+    new Date y, 1+m%12
 
 class QDate extends QInt
   tyId: -14
   toStr: -> (new Date 86400000*(10957+@i)).toISOString().slice(0,10).replace(/-/g,'.')
+  value: -> new Date 86400000*(10957+@i)
 
 class QDatetime extends QFloat
   tyId: -15
   toStr: -> (new Date 86400000*(10957+@i)).toISOString().replace(/-/g,'.').replace(/Z/g,'z')
+  value: -> new Date 86400000*(10957+@i)
 
 class QTimespan extends QLong
   tyId: -16
@@ -197,20 +206,24 @@ class QTimespan extends QLong
     d = (j.div 1000000000).getLowBitsUnsigned()
     days = (Math.floor d/86400).toString() + 'D'
     s+(getJSDate d).toISOString().replace(/...Z/,ms).replace(/.*T/,days)
+  value: -> new Date 86400000*10957+@i.toNumber()/1000000
 
 class QMinute extends QInt
   tyId: -17
   toStr: -> i2(Math.floor @i/60)+":"+i2(@i%60)
+  value: -> new Date 86400000*10957+@i*60000
 
 class QSecond extends QInt
   tyId: -18
   toStr: ->
     j = Math.floor @i/60
     i2(Math.floor j/60)+":"+i2(j%60)+':'+i2(@i%60)
+  value: -> new Date 86400000*10957+@i*1000
 
 class QTime extends QInt
   tyId: -19
   toStr: -> time2str @i
+  value: -> new Date 86400000*10957+@i
 
 class QUUID extends QBase
   tyId: -2
@@ -241,6 +254,9 @@ class QList
   toStringRng: (f,n,full=true) ->
     a = null; @lst.moveTo f*QConsts.size[@tyId]
     if a then (a.rv @lst).toString(full) else (a=QConsts.atoms[@tyId].r @lst).toString(full) for i in [1..n]
+  value: (i) ->
+    @lst.moveTo i*QConsts.size[@tyId]
+    (QConsts.atoms[@tyId].r @lst).value()
   s: -> 6 + @lst.b.length
   @r: (b) -> new this @rr b
   @rh: (b) ->
@@ -260,6 +276,7 @@ class QList0 extends QList
     if @tyId is 11 then res - @lst.length else res
   toStringAt: (i,full) -> @lst[i].toString full
   toStringRng: (f,n,full=true) -> @lst[i].toString() for i in [f..f+n-1]
+  value: (i) -> @lst[i]
   @rr: (b) ->
     lst = @rh b
     lst.lst = if lst.l>0 then b.rv() for i in [1..lst.l] else []
@@ -315,6 +332,7 @@ class QTable
   constructor: (@dict,@attr = '') -> exception "Dictionary type is expected" unless @dict.tyId in [99,127]
   columns: -> @dict.keys()
   values: -> @dict.values()
+  value: (i) -> @dict.value i
   s: -> 2 + @dict.s()
   length: -> @dict.val.lst[0].length()
   toString: -> (if @attr is '' then '' else "`#{@attr}#")+'+' + @dict.toString()
@@ -332,6 +350,12 @@ class QDict
   s: -> 1 + @key.s() + @val.s()
   keys: -> @key
   values: -> @val
+  value: (i) ->
+    res = []
+    res = @key.value i if @key.tyId is 98
+    res = res.concat @val.value i if @val.tyId is 98
+    res = res.concat (l.value i for l in @val.lst) if @val instanceof QList
+    res
   length: -> @key.length()
   toString: -> @key.toString()+'!'+@val.toString()
   @r: (b) -> new this(b.rv(), b.rv())

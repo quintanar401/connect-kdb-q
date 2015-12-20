@@ -23,6 +23,11 @@
       "versions": {
         "1.0.0": "consumeMinimapServiceV1"
       }
+    },
+    "atom-charts": {
+      "versions": {
+        "^0.0.0": "consumeCharts"
+      }
     }
   }
 }

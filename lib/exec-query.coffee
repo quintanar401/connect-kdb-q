@@ -62,6 +62,14 @@ class ExecQuery
       @resultView.addResult r for r in @results
     else @resultView.addResult res
 
+  showChart: ->
+    return unless @results.length > 0
+    res = @results[0].res
+    return unless res.tyId in [98,99,127]
+    return if res.tyId isnt 98 and !(res.keys().tyId is 98 and res.values().tyId is 98)
+    return if res.length() < 2
+    cols = if res.tyId is 98 then res.columns() else res.keys().columns().concat res.values().columns()
+
   getEditor: ->
     return null unless editor = atom.workspace.getActiveTextEditor()
     return null unless editor.getGrammar().scopeName is "source.q"

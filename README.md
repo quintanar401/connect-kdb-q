@@ -60,7 +60,7 @@ The first server entry has all available settings:
 * name - optional pretty name for the server. If it is not provided it gets constructed from other fields.
 * tags - optional tags to speed up search for this server, should be a string or array of strings. EMEA, stock, mysrv and etc.
 
-You can provide the default username and password. They will be used for all connections that do not a username set.
+You can provide the default username and password. They will be used for all connections that do not have a username set.
 
 You can also provide optional tags in the top level object that will be shown as filters in the server view. Tags are displayed as buttons or lists, lists should be marked with ':list'.
 

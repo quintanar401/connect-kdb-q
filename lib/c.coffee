@@ -1,7 +1,7 @@
 net = require 'net'
 {Buffer} = require 'buffer'
 
-npmLong = require 'Long'
+npmLong = require 'long'
 
 ni = -2147483648 # i,m,v,t,d
 nw = 2147483647 # -nw = neg nw

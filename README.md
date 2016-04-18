@@ -92,7 +92,7 @@ Atm it is not possible to close connections. Reload the editor if you need this.
 
 ## Query Results
 
-Once you connected to some server you can start to execute queries. You can either execute the current line by pressing <kbd>Ctrl-Enter</kbd> or select some text and press <kdb>Ctrl-E</kbd>. Also you can select `execute-selection` command in either context or global KDB-Q menus.
+Once you connected to some server you can start to execute queries. You can either execute the current line by pressing <kbd>Ctrl-Enter</kbd> or select some text and press <kbd>Ctrl-E</kbd>. Also you can select `execute-selection` command in either context or global KDB-Q menus.
 
 The query result will be printed into Query Result view. It will be created in the bottom or on the right of the current pane. It is actually an ordinary editor with some additional features thus you can use it as you could have used any Q editor view - execute queries, connect to servers, use other packages related to Q and etc.
 

@@ -141,11 +141,13 @@ class QLong extends QBase
 class QReal extends QBase
   tyId: -8
   w: (B) -> B.we @i
+  toStr: -> if isNaN @i then "0n" else if isFinite @i then @i.toString() else if @i>0 then "0w" else "-0w"
   @rr: (b) -> b.re()
 
 class QFloat extends QBase
   tyId: -9
   w: (B) -> B.wf @i
+  toStr: -> if isNaN @i then "0n" else if isFinite @i then @i.toString() else if @i>0 then "0w" else "-0w"
   @rr: (b) -> b.rf()
 
 class QChar extends QBase
@@ -194,7 +196,7 @@ class QDate extends QInt
 
 class QDatetime extends QFloat
   tyId: -15
-  toStr: -> (new Date 86400000*(10957+@i)).toISOString().replace(/-/g,'.').replace(/Z/g,'z')
+  toStr: -> if isNaN @i then "0Nz" else if isFinite @i then (new Date 86400000*(10957+@i)).toISOString().replace(/-/g,'.').replace(/Z/g,'z') else if @i>0 then "0wz" else "-0wz"
   value: -> new Date 86400000*(10957+@i)
 
 class QTimespan extends QLong

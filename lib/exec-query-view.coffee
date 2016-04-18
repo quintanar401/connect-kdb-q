@@ -13,6 +13,8 @@ class ResultView
       return unless pane = atom.workspace.paneForItem this
       if @getPath() then super() else pane.saveItemAs this).bind @editor
     @editor.getURI = -> 'kdb://query.results'
+    @editor.isModified = -> false
+    @editor.getQDocName = -> 'qdoc..execview'
     @editor.serialize = -> null
     grammar = atom.grammars.grammarForScopeName 'source.q'
     grammar.maxTokensPerLine = 1000

@@ -39,21 +39,38 @@ class ResultView
       buffer.insert [pos,100000], "\n(`EXCEPTION; \"#{res.srv}\"; #{res.err.toString()})\n"
       @markOverview pos+1, false
       return
-
     if !res.overview
       res.width ?= @model.showWidth; res.height ?= @model.showHeight; res.sep = ' '
       res.wscroll = res.hscroll = false
       r = if res.res instanceof @C.KException then 'EXCEPTION' else 'SUCCESS'
       cnt = if 0<= res.res.tyId < 20 or res.res.tyId in [98,99,127] then res.res.length() else 0
-      res.overview = "\n(`#{r}; \"#{res.srv}\"; #{res.time}ms; #{if cnt>0 then cnt+'; ' else ''}#{@C.showProto res.res})\n"
+      res.overview = "(`#{r}; \"#{res.srv}\"; #{res.time}ms; #{if cnt>0 then cnt+'; ' else ''}#{@C.showProto res.res})"
       res.result = @show res, res.res
       res.query = 'Q: '+res.query
       res.query = res.query.replace /\n/g, '\n   ' if res.query.includes '\n'
-    buffer.insert [pos,100000], res.overview + (res.result.join '\n') + '\n' + res.query + '\n'
-    @markOverview pos+1, /SUCCESS/.test res.overview
-    @markScroll pos+2, res
-    @editor.setCursorBufferPosition [pos+1,0] if @editor.getCursorBufferPosition().row > pos
-    @editor.foldBufferRow pos+2+res.result.length if res.query.includes '\n'
+
+    buffer.insert [pos,10000], '\n'
+    pos = pos + 1
+    cfg = atom.config.get('connect-kdb-q.resultFmt').split(" ")
+    RES = QUERY = INFO = false
+    opos = pos
+    for cEntry in cfg
+      if cEntry is 'INFO' and !INFO
+        INFO = true
+        buffer.insert [pos,0], res.overview + '\n'
+        @markOverview pos, /SUCCESS/.test res.overview
+        pos = pos+1
+      if cEntry is 'RES' and !RES
+        RES = true
+        buffer.insert [pos,0], (res.result.join '\n')+'\n'
+        @markScroll pos, res
+        pos = pos + res.result.length
+      if cEntry is 'QUERY' and !QUERY
+        QUERY = true
+        buffer.insert [pos,0], res.query + '\n'
+        @editor.foldBufferRow pos if res.query.includes '\n'
+        pos = pos + res.query.split('\n').length
+    @editor.setCursorBufferPosition [opos,0] if @editor.getCursorBufferPosition().row > opos
 
   updateRes: (pos) ->
     m = @editor.findMarkers containsBufferPosition: pos

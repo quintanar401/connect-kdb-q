@@ -38,6 +38,11 @@ module.exports = ConnectKdbQ =
       maximum: 500
       type: 'integer'
       title: 'Lines per result to show'
+    resultFmt:
+      default: "INFO RES QUERY"
+      type: "string"
+      title: "What information to print for query results and in what order"
+      description: "You can list any of INFO, RES, QUERY in any order and they will be printed accordingly in the result's window"
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable

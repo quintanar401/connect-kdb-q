@@ -102,6 +102,7 @@ There some settings associated with this view:
 * maxResults - if you close the query view all text will be lost but when you reopen it maxResults last queries will be added to the view.
 * maxFullResults - raw query data gets deleted to free memory for all maxResults except the last maxFullResults.
 * showWidth and showHeight - similar to \\c command in Q console.
+* resultFmt - customize how the results are printed into Query Results window. It is 'INFO RES QUERY' by default and these tags can be rearraged or dropped.
 
 Text in the query view is divided into two parts by '=== cut line ===' line. New query results get printed after this line. The space above can be used for ad-hoc queries. Thus the query view can be used as a Q console inside the editor.
 

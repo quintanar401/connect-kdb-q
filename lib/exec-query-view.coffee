@@ -107,7 +107,7 @@ class ResultView
       when res.tyId is 0 then @showList cfg, res, lvl
       when res.tyId < 20 then  @showTList cfg, res
       when res.tyId is 98 then @showTbl cfg, res, lvl
-      when res.tyId in [99,127] and res.keys().tyId is 98 and res.values().tyId is 98 then @showKeyTbl cfg, res, lvl
+      when res.tyId in [99,127] and (res.keys().tyId is 98 or res.values().tyId is 98) then @showKeyTbl cfg, res, lvl
       when res.tyId in [99,127] then @showDict cfg, res, lvl
       else res.toString().split '\n'
     str = @setScroll cfg, str
@@ -151,8 +151,10 @@ class ResultView
     tbl.reduce ((s,e)->s.concat e), []
 
   getTbl: (cfg,res,lvl,cols=null) ->
-    vals = res.values().lst; tw = -1
-    for k,i in res.columns().lst
+    vals = if res.tyId is 98 then res.values().lst else [res]
+    tw = -1
+    cls = if res.tyId is 98 then res.columns().lst else [' ']
+    for k,i in cls
       cfg.height -= 2
       v = if vals[i].length() is 0 then [[k],0] else [[k],0].concat @showList0 cfg, vals[i], 0
       cfg.height += 2

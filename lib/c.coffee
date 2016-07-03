@@ -359,7 +359,7 @@ class QDict
     res = res.concat (l.value i for l in @val.lst) if @val instanceof QList
     res
   length: -> @key.length()
-  toString: -> @key.toString()+'!'+@val.toString()
+  toString: -> (if @key.length() is 1 then "(#{@key.toString()})" else @key.toString())+'!'+@val.toString()
   @r: (b) -> new this(b.rv(), b.rv())
   w: (B) -> B.wv @key; B.wv @val
 

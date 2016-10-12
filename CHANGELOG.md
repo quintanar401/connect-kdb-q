@@ -1,3 +1,6 @@
+## 0.4.2
+* fix new editor issue in 11.x
+
 ## 0.4.1
 * fix dictionary display issue + add () to 1 element keys of dicts
 

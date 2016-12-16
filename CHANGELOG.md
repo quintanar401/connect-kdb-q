@@ -1,3 +1,6 @@
+## 0.4.3
+* fix timestamp/span to string issue
+
 ## 0.4.2
 * fix new editor issue in 11.x
 

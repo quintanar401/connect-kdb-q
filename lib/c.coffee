@@ -174,7 +174,7 @@ class QTimestamp extends QLong
   toStr: ->
     ms = i9 (@i.modulo 1000000000).getLowBitsUnsigned()
     d = (@i.div 1000000000).getLowBitsUnsigned()
-    (getJSDate d).toISOString().replace(/...Z/,ms).replace(/-/g,'.')
+    (getJSDate d).toISOString().replace(/...Z/,ms).replace(/-/g,'.').replace(/T/,'D')
   value: -> getJSDate @i.toNumber()/1000000
 
 class QMonth extends QInt

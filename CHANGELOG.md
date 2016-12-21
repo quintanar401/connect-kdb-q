@@ -1,3 +1,6 @@
+## 0.4.4
+* fix T in timestamp
+
 ## 0.4.3
 * fix timestamp/span to string issue
 

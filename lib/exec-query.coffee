@@ -47,7 +47,7 @@ class ExecQuery
     if !pane = atom.workspace.paneForURI('kdb://query.results')
       view = require './exec-query-view'
       me = atom.workspace.getActivePane()
-      pane = if @panePosition is 'right' then me.splitRight() else me.splitDown()
+      pane = if @panePosition is 'right' then me.splitRight() else if @panePosition is "bottom" then me.splitDown() else if @panePosition is "left" then me.splitLeft() else me.splitUp()
       return if !pane
       @resultView = new view()
       @resultView.init this

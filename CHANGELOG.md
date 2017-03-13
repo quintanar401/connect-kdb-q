@@ -1,3 +1,6 @@
+## 0.4.6
+* allow Query Result view at the top/left
+
 ## 0.4.5
 * 13.0 style changes
 

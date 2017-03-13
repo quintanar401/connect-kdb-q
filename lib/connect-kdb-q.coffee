@@ -7,7 +7,7 @@ module.exports = ConnectKdbQ =
     QueryResultsPosition:
       default: 'bottom'
       type: 'string'
-      enum: ['right','bottom']
+      enum: ['right','left','bottom','top']
     ResultFontSize:
       default: 11
       type: 'integer'
@@ -24,7 +24,7 @@ module.exports = ConnectKdbQ =
       minimim: 1
       maximum: 10
       type: 'integer'
-      title: 'Maximum number of result data to hold'
+      title: 'Maximum number of raw result data to hold'
       description: 'Beware - raw query data may consume much memory, do not abuse this setting'
     showWidth:
       default: 150

@@ -1,3 +1,17 @@
+
+
+{allowUnsafeEval, allowUnsafeNewFunction, Function} = require 'loophole'
+window.Function = Function
+
+vg = require 'vega'
+vgLite = require 'vega-lite'
+vgEmbed =require 'vega-embed'
+
+window.vgLite = vgLite
+window.vgEmbed = vgEmbed
+
+
+
 {TextEditor,CompositeDisposable} = require 'atom'
 
 module.exports =
@@ -56,7 +70,7 @@ class ResultView
     buffer.insert [pos,10000], '\n'
     pos = pos + 1
     cfg = atom.config.get('connect-kdb-q.resultFmt').split(" ")
-    RES = QUERY = INFO = false
+    RES = QUERY = INFO = INK = false
     opos = pos
     for cEntry in cfg
       if cEntry is 'INFO' and !INFO
@@ -66,7 +80,8 @@ class ResultView
         pos = pos+1
       if cEntry is 'RES' and !RES
         RES = true
-        buffer.insert [pos,0], (res.result.join '\n')+'\n'
+        result = res.result.join '\n'
+        buffer.insert [pos,0], result+'\n'
         @markScroll pos, res
         pos = pos + res.result.length
       if cEntry is 'QUERY' and !QUERY
@@ -74,7 +89,38 @@ class ResultView
         buffer.insert [pos,0], res.query + '\n'
         @editor.foldBufferRow pos if res.query.includes '\n'
         pos = pos + res.query.split('\n').length
+
+      if cEntry is 'INK' and !INK
+        e = atom.workspace.getActiveTextEditor()
+        p = e.getCursorBufferPosition().row
+        @model.ink.Result.removeLines(e, p, p)
+        obj = res.res
+        view = document.createElement("div")
+
+        if @isVega obj
+          spec = @C.toJSON obj.value(1)
+          view.setAttribute("id","vis#{p}")
+          view.classList.add 'vega'
+          vgEmbed("#vis#{p}", spec, (result,error) -> console.log result)
+        else
+          result = res.result.join '\n'
+          view.innerText = result
+        r = new @model.ink.Result e, [p,p] ,content: view, error: "", type: 'block'
+
     @editor.setCursorBufferPosition [opos,0] if @editor.getCursorBufferPosition().row > opos
+
+  isVega: (obj) ->
+    if obj.tyId == 0
+      firstElement = obj.value(0)
+      if firstElement.tyId == 10
+        if "\"atomEditor\""==firstElement.toString()
+          return true
+        else
+          return false
+      else
+        return false
+    else
+      return false
 
   updateRes: (pos) ->
     m = @editor.findMarkers containsBufferPosition: pos

@@ -12,15 +12,9 @@
   },
   "dependencies": {
     "long": "2.x",
-    "loophole":"*",
-    "vega":"*",
-    "vega-lite":"*",
-    "vega-embed":"*",
     "atom-space-pen-views": "2.1.1",
     "underscore": "^1.8.3",
     "underscore-plus": "^1.5.1",
-    "datatables.net":"",
-    "datatables.net-dt":""
   },
   "consumedServices": {
     "ink": {

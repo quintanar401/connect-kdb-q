@@ -14,7 +14,7 @@ class ExecQuery
       view = atom.views.getView @resultView.getEditor()
       view.style.fontSize = @fontSize + 'px'
 
-  init: (@servers) ->
+  init: (@servers,@ink) ->
 
   execLine: ->
     return unless editor = @getEditor()
@@ -59,7 +59,7 @@ class ExecQuery
       eview = atom.views.getView(editor)
       eview.style.fontSize = @fontSize + 'px'
       me.activate()
-      @resultView.addResult r for r in @results
+      @resultView.addResult(r) for r in @results
     else @resultView.addResult res
 
   showChart: ->

@@ -702,6 +702,45 @@ class C
     c = @getConn args
     c.connect cb
 
+QtoJSON = (d) ->
+  if not d?
+    return d
+  tyId = d.tyId
+  if tyId < 0
+    return d.value()
+  if tyId==0
+    lst = []
+    l = d.length() - 1
+    lst.push QtoJSON d.value i for i in [0..l]
+    return lst
+  if 1<= tyId && tyId <= 97
+    lst = []
+    l = d.length() - 1
+    lst.push d.value i for i in [0..l]
+    if tyId == 10
+      return lst.join("")
+    else
+      return lst
+  if tyId==98
+    k = QtoJSON d.dict.key
+    v = QtoJSON d.dict.val
+    l = v[0].length
+    lst = []
+    for i in [0 .. l - 1]
+      o = {}
+      for j in [0 .. k.length - 1]
+        o[k[j]] = v[j][i]
+      lst.push o
+    return lst
+  if tyId==99
+    k = QtoJSON d.key
+    v = QtoJSON d.val
+    o={}
+    o[k[i]] = v[i] for i in [0 .. k.length - 1 ]
+    return o
+  if tyId > 99
+    d.toString()
+
 module.exports =
   Boolean: QBoolean
   UUID: QUUID
@@ -730,3 +769,4 @@ module.exports =
   Message: QMessage
   C: new C()
   showProto: showProto
+  toJSON : QtoJSON

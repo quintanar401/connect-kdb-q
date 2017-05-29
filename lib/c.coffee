@@ -336,7 +336,7 @@ class QTable
   values: -> @dict.values()
   value: (i) -> @dict.value i
   s: -> 2 + @dict.s()
-  length: -> @dict.val.lst[0].length()
+  length: -> if @dict.val instanceof QList then @dict.val.lst[0].length() else 0
   toString: -> (if @attr is '' then '' else "`#{@attr}#")+'+' + @dict.toString()
   @r: (b) ->
     a = QConsts.attr[b.rub()-1] || ''

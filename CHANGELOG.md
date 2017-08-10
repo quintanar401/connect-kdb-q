@@ -1,3 +1,7 @@
+## 0.4.7
+* fix the result view for 1.19 - no scroll, bad font resize
+* fix keyboard issue in the server view
+
 ## 0.4.6
 * allow Query Result view at the top/left
 
@@ -39,4 +43,3 @@
 * Suppresses minimap in Query Result
 
 #TODO fix extra line when wrapped request in the output
-#TODO make arror down work in srv view

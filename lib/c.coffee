@@ -390,7 +390,7 @@ class QXFunc
 
 class QUFunc extends QXFunc
   tyId: 101
-  @rr: (b) -> if (c = b.rub()) is 41 then 'enlist' else if c is 255 then '' else QConsts.unary[c] || 'unexpected'
+  @rr: (b) -> if (c = b.rub()) is 255 then '' else QConsts.unary[c] || 'unexpected'
 
 class QBFunc extends QXFunc
   tyId: 102
@@ -436,9 +436,9 @@ class QConsts
   @extras: [QTable,QDict,QFunc,QUFunc,QBFunc,QAFunc,QPFunc,QCFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc]
   @unary: ['::','flip','neg','first','reciprocal','where','reverse','null','group','hopen','hclose',
     'string','enlist','count','floor','not','key','distinct','type','value','read0','read1','2::',
-    'avg','last','sum','prd','min','max','exit','getenv','abs']
+    'avg','last','sum','prd','min','max','exit','getenv','abs',"sqrt","log","exp","sin","asin","cos","acos","tan","atan","enlist","var","dev"]
   @binary: [':','+','-','*','%','&','|','^','=','<','>','$',',','#','_','~','!','?','@','.','0:',
-    '1:','2:','in','within','like','bin','ss','insert','wsum','wavg','div']
+    '1:','2:','in','within','like','bin','ss','insert','wsum','wavg','div',"xexp","setenv","binr","cov","cor"]
   @adv: ["'","/","\\","':","/:","\\:"]
   @attr: 'supg'
   @battr: s: 1, u: 2, p: 3, g: 4

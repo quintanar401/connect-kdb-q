@@ -1,3 +1,6 @@
+## 0.4.8
+* fix internal unary and binary function names
+
 ## 0.4.7
 * fix the result view for 1.19 - no scroll, bad font resize
 * fix keyboard issue in the server view

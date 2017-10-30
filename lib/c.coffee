@@ -549,6 +549,7 @@ class QConn
     @client = null; @request = null
     @lastTime = null
     @cbs = []; @proxies = []; @data = []; @l = -1; @cl = 0
+    @lmt = atom.config.get('connect-kdb-q.limitResSize')
   toString: -> "#{@host}:#{@port}" + (if @uname is '' then '' else ":#{@uname}") +
     (if @exclusive then '[excl]' else '') + "[#{@status}]"
   getQueryTime: -> (new Date()) - @lastTime
@@ -634,8 +635,9 @@ class QConn
       if @l < 0
         @cl = 0
         @l = (new QMessage d).rheader()
+        atom.notifications.addError "Msg is too big, increase limitResSize setting. Msg size: #{@l/(1024*1024)}Mb, max size #{@lmt}Mb" if (@lmt*1048576)<=@l
       @cl += d.length
-      @data.push d
+      @data.push d if @cl < (@lmt*1048576)
       exception 'unexpected msg length' if @cl > @l
       if @cl is @l
         res = Buffer.concat @data
@@ -672,7 +674,10 @@ class QProxy
     enc m
   sendSync: (msg, cb) -> @conn.writeSync (@serialize msg, 1), (err, res) =>
     return cb err if err
-    cb null, time: @conn.getQueryTime(), res: @deserialize(res)
+    try
+      cb null, time: @conn.getQueryTime(), res: @deserialize(res)
+    catch error
+      cb error, null
   sendAsync: (msg) -> @conn.writeAsync (@serialize msg, 0)
   subs: (tbl, cb, initMsg) ->
     @subs[tbl] = cb; @mode = 'subs'

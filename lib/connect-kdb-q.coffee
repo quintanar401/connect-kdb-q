@@ -43,6 +43,11 @@ module.exports = ConnectKdbQ =
       type: "string"
       title: "What information to print for query results and in what order"
       description: "You can list any of INFO, RES, QUERY in any order and they will be printed accordingly in the result's window"
+    limitResSize:
+      default: 1024
+      type: 'integer'
+      title: 'Result size limit in Mbytes'
+      description: 'Drop the result if its size is greater than this value'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable

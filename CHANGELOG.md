@@ -1,3 +1,6 @@
+## 0.4.9
+* add res limitResSize setting
+
 ## 0.4.8
 * fix internal unary and binary function names
 

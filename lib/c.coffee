@@ -390,7 +390,7 @@ class QXFunc
 
 class QUFunc extends QXFunc
   tyId: 101
-  @rr: (b) -> if (c = b.rub()) is 41 then 'enlist' else if c is 255 then '' else QConsts.unary[c] || 'unexpected'
+  @rr: (b) -> if (c = b.rub()) is 255 then '' else QConsts.unary[c] || 'unexpected'
 
 class QBFunc extends QXFunc
   tyId: 102
@@ -436,9 +436,9 @@ class QConsts
   @extras: [QTable,QDict,QFunc,QUFunc,QBFunc,QAFunc,QPFunc,QCFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc,QAdFunc]
   @unary: ['::','flip','neg','first','reciprocal','where','reverse','null','group','hopen','hclose',
     'string','enlist','count','floor','not','key','distinct','type','value','read0','read1','2::',
-    'avg','last','sum','prd','min','max','exit','getenv','abs']
+    'avg','last','sum','prd','min','max','exit','getenv','abs',"sqrt","log","exp","sin","asin","cos","acos","tan","atan","enlist","var","dev"]
   @binary: [':','+','-','*','%','&','|','^','=','<','>','$',',','#','_','~','!','?','@','.','0:',
-    '1:','2:','in','within','like','bin','ss','insert','wsum','wavg','div']
+    '1:','2:','in','within','like','bin','ss','insert','wsum','wavg','div',"xexp","setenv","binr","cov","cor"]
   @adv: ["'","/","\\","':","/:","\\:"]
   @attr: 'supg'
   @battr: s: 1, u: 2, p: 3, g: 4
@@ -549,6 +549,7 @@ class QConn
     @client = null; @request = null
     @lastTime = null
     @cbs = []; @proxies = []; @data = []; @l = -1; @cl = 0
+    @lmt = atom.config.get('connect-kdb-q.limitResSize')
   toString: -> "#{@host}:#{@port}" + (if @uname is '' then '' else ":#{@uname}") +
     (if @exclusive then '[excl]' else '') + "[#{@status}]"
   getQueryTime: -> (new Date()) - @lastTime
@@ -634,8 +635,9 @@ class QConn
       if @l < 0
         @cl = 0
         @l = (new QMessage d).rheader()
+        atom.notifications.addError "Msg is too big, increase limitResSize setting. Msg size: #{@l/(1024*1024)}Mb, max size #{@lmt}Mb" if (@lmt*1048576)<=@l
       @cl += d.length
-      @data.push d
+      @data.push d if @cl < (@lmt*1048576)
       exception 'unexpected msg length' if @cl > @l
       if @cl is @l
         res = Buffer.concat @data
@@ -672,7 +674,10 @@ class QProxy
     enc m
   sendSync: (msg, cb) -> @conn.writeSync (@serialize msg, 1), (err, res) =>
     return cb err if err
-    cb null, time: @conn.getQueryTime(), res: @deserialize(res)
+    try
+      cb null, time: @conn.getQueryTime(), res: @deserialize(res)
+    catch error
+      cb error, null
   sendAsync: (msg) -> @conn.writeAsync (@serialize msg, 0)
   subs: (tbl, cb, initMsg) ->
     @subs[tbl] = cb; @mode = 'subs'

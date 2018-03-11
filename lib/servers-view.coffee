@@ -59,13 +59,13 @@ class SrvView
         v.isSelected = !v.isSelected
         @filterSrvs()
       onKey: (e) =>
-        if e.keyIdentifier is 'Up'
+        if e.key is 'ArrowUp'
           @selectPrev()
           e.stopPropagation()
-        else if e.keyIdentifier is 'Down'
+        else if e.key is 'ArrowDown'
           @selectNext()
           e.stopPropagation()
-        else if e.keyIdentifier is 'Enter'
+        else if e.key is 'Enter'
           @hide @getSrv()
           e.stopPropagation()
         else if  e.keyCode is 27
@@ -167,7 +167,12 @@ class SrvView
         sel.isSelected = false
         srv.isSelected = true
         @scrollToItemView  srv
-        break
+        return
+    for srv in @data.srvs
+      if srv.isVisible
+        srv.isSelected = true
+        @scrollToItemView  srv
+        return
 
   selectPrev: ->
     sel = null

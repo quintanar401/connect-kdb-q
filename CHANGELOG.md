@@ -1,3 +1,6 @@
+## 0.4.10
+* add a pull request - fix for Query View
+
 ## 0.4.9
 * add res limitResSize setting
 

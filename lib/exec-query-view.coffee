@@ -17,11 +17,13 @@ class ResultView
     @editor.isModified = -> false
     @editor.getQDocName = -> 'qdoc..execview'
     @editor.serialize = -> null
-    atom.grammars.assignLanguageMode(@editor.getBuffer(), 'source.q')
-    #grammar = atom.grammars.grammarForScopeName 'source.q'
-    #grammar.maxTokensPerLine = 1000
-    #@editor.setGrammar grammar if grammar
-    # atom.workspace.textEditorRegistry.setGrammarOverride(@editor,'source.q')
+    if atom.grammars.assignLanguageMode
+      atom.grammars.assignLanguageMode(@editor.getBuffer(), 'source.q')
+    else
+      grammar = atom.grammars.grammarForScopeName 'source.q'
+      grammar.maxTokensPerLine = 1000
+      @editor.setGrammar grammar if grammar
+      atom.workspace.textEditorRegistry.setGrammarOverride(@editor,'source.q')
     @editor.setText '========== cut line =========='
     disposable = atom.textEditors.add(@editor)
     @editor.onDidDestroy -> disposable.dispose()

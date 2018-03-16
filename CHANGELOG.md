@@ -1,3 +1,7 @@
+## 0.4.11
+* fix config path
+* add keep alive
+
 ## 0.4.10
 * add a pull request - fix for Query View
 

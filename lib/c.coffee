@@ -609,6 +609,7 @@ class QConn
     @lastTime = new Date()
     null
   onConn: ->
+    @client.setKeepAlive(true, 1000)
     i = @uname.length; b = new Buffer if @mode > 0  then i + 2 else i + 1
     b.write @uname, 0, i, 'ascii'
     b.writeUInt8 3, i++ if @mode > 0

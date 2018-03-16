@@ -24,8 +24,8 @@ class Servers
     path = require 'path'
     fs = require 'fs'
     srvs = []
-    @srvFilePath = path.join atom.config.configDirPath, 'qservers.json'
-    @srvFilePathUser = path.join atom.config.configDirPath, 'qservers_user.json'
+    @srvFilePath = path.join atom.getConfigDirPath(), 'qservers.json'
+    @srvFilePathUser = path.join atom.getConfigDirPath(), 'qservers_user.json'
     if fs.existsSync @srvFilePathUser
       @initSrvs fs.readFileSync @srvFilePathUser
     else

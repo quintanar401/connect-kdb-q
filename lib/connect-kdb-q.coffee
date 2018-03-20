@@ -39,7 +39,7 @@ module.exports = ConnectKdbQ =
       type: 'integer'
       title: 'Lines per result to show'
     resultFmt:
-      default: "INFO RES QUERY"
+      default: "INFO RES QUERY INK"
       type: "string"
       title: "What information to print for query results and in what order"
       description: "You can list any of INFO, RES, QUERY in any order and they will be printed accordingly in the result's window"
@@ -64,6 +64,10 @@ module.exports = ConnectKdbQ =
     @servers = @statusBar = @subscriptions = null
 
   serialize: ->
+
+  consumeInk: (ink)->
+    @ink = ink
+    window.ink = ink
 
   registerEvents: ->
     @subscriptions.add atom.commands.add 'atom-workspace', 'connect-kdb-q:servers': (event) =>
@@ -119,4 +123,4 @@ module.exports = ConnectKdbQ =
     @setupServers()
     if !@exec
       @exec = require('./exec-query').exec
-      @exec.init @servers
+      @exec.init @servers,@ink

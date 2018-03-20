@@ -15,7 +15,7 @@ class ExecQuery
       view.style.fontSize = @fontSize + 'px'
       eview.measureDimensions()
 
-  init: (@servers) ->
+  init: (@servers,@ink) ->
 
   execLine: ->
     return unless editor = @getEditor()
@@ -61,7 +61,7 @@ class ExecQuery
       eview.style.fontSize = @fontSize + 'px'
       eview.measureDimensions()
       me.activate()
-      @resultView.addResult r for r in @results
+      @resultView.addResult(r) for r in @results
     else @resultView.addResult res
 
   showChart: ->

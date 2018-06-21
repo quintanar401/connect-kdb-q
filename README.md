@@ -126,4 +126,6 @@ You see that some data was added on the right. Notice also that GUID is now reco
 
 If you click on the second marker additional rows will be printed. Each time you click on a marker the current 'show' number of additional rows or columns is shown.
 
+If you enter CLEAR on the first line of the result view the result view will be cleared on every query.
+
 Finally it is worth noting that you can save the query view as an ordinary file.

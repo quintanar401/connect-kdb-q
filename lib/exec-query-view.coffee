@@ -41,7 +41,8 @@ class ResultView
     if pos is buffer.getLines().length
       buffer.insert [0,0], '========== cut line ==========\n'
       pos = 0
-
+    if /CLEAR/.test(buffer.lineForRow 0)
+      @editor.setText 'CLEAR\n========== cut line =========='
     if res.err
       buffer.insert [pos,100000], "\n(`EXCEPTION; \"#{res.srv}\"; #{res.err.toString()})\n"
       @markOverview pos+1, false

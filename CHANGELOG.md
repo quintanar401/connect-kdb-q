@@ -1,3 +1,5 @@
+## 0.4.12
+* add CLEAR cmd to clear the results window
 ## 0.4.11
 * fix config path
 * add keep alive

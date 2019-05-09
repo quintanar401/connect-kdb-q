@@ -1,3 +1,6 @@
+## 0.4.14
+* Add Dock support
+
 ## 0.4.13
 * fix timestamp string repr
 

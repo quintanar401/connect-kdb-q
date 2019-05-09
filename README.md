@@ -94,10 +94,11 @@ Atm it is not possible to close connections. Reload the editor if you need this.
 
 Once you connected to some server you can start to execute queries. You can either execute the current line by pressing <kbd>Ctrl-Enter</kbd> or select some text and press <kbd>Ctrl-E</kbd>. Also you can select `execute-selection` command in either context or global KDB-Q menus.
 
-The query result will be printed into Query Result view. It will be created in the bottom or on the right of the current pane. It is actually an ordinary editor with some additional features thus you can use it as you could have used any Q editor view - execute queries, connect to servers, use other packages related to Q and etc.
+The query result will be printed into Query Result view. It will be created in the bottom, top, left or on the right of the current pane/dock. It is actually an ordinary editor with some additional features thus you can use it as you could have used any Q editor view - execute queries, connect to servers, use other packages related to Q and etc.
 
 There some settings associated with this view:
-* QueryResultsPosition - right or bottom. Where the view will be created.
+* DockPosition - where to put the view. Select none to use ordinary panes.
+* QueryResultsPosition - right, left, top or bottom. Where the view will be created.
 * ResultFontSize - in order to see as much data as possible you can set a smaller font than in other editor views.
 * maxResults - if you close the query view all text will be lost but when you reopen it maxResults last queries will be added to the view.
 * maxFullResults - raw query data gets deleted to free memory for all maxResults except the last maxFullResults.

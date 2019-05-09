@@ -9,6 +9,7 @@ class ExecQuery
     @subscriptions.add atom.config.observe 'connect-kdb-q.maxFullResults', (@maxFullResults) =>
     @subscriptions.add atom.config.observe 'connect-kdb-q.maxResults', (@maxResults) =>
     @subscriptions.add atom.config.observe 'connect-kdb-q.QueryResultsPosition', (@panePosition) =>
+    @subscriptions.add atom.config.observe 'connect-kdb-q.DockPosition', (@dockPosition) =>
     @subscriptions.add atom.config.observe 'connect-kdb-q.ResultFontSize', (@fontSize) =>
       return unless @resultView
       view = atom.views.getView @resultView.getEditor()
@@ -47,7 +48,11 @@ class ExecQuery
 
     if !pane = atom.workspace.paneForURI('kdb://query.results')
       view = require './exec-query-view'
-      me = atom.workspace.getActivePane()
+      if @dockPosition is 'none'
+        me = atom.workspace.getActivePane()
+      else
+        dock=@getDock()
+        me=dock.getActivePane();
       pane = if @panePosition is 'right' then me.splitRight() else if @panePosition is "bottom" then me.splitDown() else if @panePosition is "left" then me.splitLeft() else me.splitUp()
       return if !pane
       @resultView = new view()
@@ -62,7 +67,13 @@ class ExecQuery
       eview.measureDimensions()
       me.activate()
       @resultView.addResult r for r in @results
-    else @resultView.addResult res
+    else
+      @resultView.addResult res
+      if @dockPosition isnt 'none'
+        dock=@getDock()
+        dock.show()
+
+  getDock: -> if @dockPosition is 'right' then atom.workspace.getRightDock() else if @dockPosition is 'left' then atom.workspace.getLeftDock() else atom.workspace.getBottomDock()
 
   showChart: ->
     return unless @results.length > 0

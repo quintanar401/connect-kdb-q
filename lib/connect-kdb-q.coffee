@@ -8,6 +8,10 @@ module.exports = ConnectKdbQ =
       default: 'bottom'
       type: 'string'
       enum: ['right','left','bottom','top']
+    DockPosition:
+      default: 'none'
+      type: 'string'
+      enum: ['none','right','bottom','left']
     ResultFontSize:
       default: 11
       type: 'integer'

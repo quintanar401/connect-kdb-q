@@ -1,3 +1,6 @@
+## 0.4.15
+fix font change handler
+
 ## 0.4.14
 * Add Dock support
 

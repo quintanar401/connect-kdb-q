@@ -14,7 +14,7 @@ class ExecQuery
       return unless @resultView
       view = atom.views.getView @resultView.getEditor()
       view.style.fontSize = @fontSize + 'px'
-      eview.measureDimensions()
+      view.measureDimensions()
 
   init: (@servers) ->
 

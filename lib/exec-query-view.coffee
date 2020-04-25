@@ -53,7 +53,7 @@ class ResultView
       r = if res.res instanceof @C.KException then 'EXCEPTION' else 'SUCCESS'
       cnt = if 0<= res.res.tyId < 20 or res.res.tyId in [98,99,127] then res.res.length() else 0
       res.overview = "(`#{r}; \"#{res.srv}\"; #{res.time}ms; #{if cnt>0 then cnt+'; ' else ''}#{@C.showProto res.res})"
-      res.result = @show res, res.res
+      res.result = @showRes res, res.res
       res.query = 'Q: '+res.query
       res.query = res.query.replace /\n/g, '\n   ' if res.query.includes '\n'
 
@@ -92,7 +92,7 @@ class ResultView
         if p.horizontal then res.width += @model.showWidth else res.height += @model.showHeight
         start = if p.horizontal then pos.row else 1+pos.row-res.result.length
         @editor.getBuffer().deleteRows start,start+res.result.length-1
-        res.result = @show res, res.res
+        res.result = @showRes res, res.res
         @editor.getBuffer().insert [start,0], (res.result.join '\n') + '\n'
         wline = 0
         if p.horizontal and !res.wscroll
@@ -107,6 +107,10 @@ class ResultView
       return r if r.id is id
     null
 
+  showRes: (cfg, res) ->
+    str = @show cfg, res
+    str = @setScroll cfg, str
+
   show: (cfg, res, lvl=0) ->
     return [res.toString()] if res.tyId < 0 or res.tyId is 128
     return res.toString().split '\n' if 99 < res.tyId < 120
@@ -118,7 +122,6 @@ class ResultView
       when res.tyId in [99,127] and (res.keys().tyId is 98 or res.values().tyId is 98) then @showKeyTbl cfg, res, lvl
       when res.tyId in [99,127] then @showDict cfg, res, lvl
       else res.toString().split '\n'
-    str = @setScroll cfg, str
 
   setScroll: (cfg,str) ->
     if str.length > cfg.height

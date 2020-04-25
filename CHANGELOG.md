@@ -1,3 +1,6 @@
+## 0.4.16
+Fix incorrect display of results when there is an overflow
+
 ## 0.4.15
 fix font change handler
 
